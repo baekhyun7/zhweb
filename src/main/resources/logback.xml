@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<jmxConfigurator />
+
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>
+				<![CDATA[
+                    %d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%6.6level) %magenta(${PID}) --- [%15.15thread] %cyan(%-40.40logger) : %msg %n
+                ]]>
+			</pattern>
+		</layout>
+	</appender>
+
+	<!-- 生产环境 -->
+	<appender name="file"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${user.dir}/logs/zhweb-debug.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>
+				${user.dir}/logs/zhweb-debug-%d{yyyy-MM-dd}.log.zip
+			</fileNamePattern>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>
+				<!--  -->
+				%-20(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{80} - %msg%n
+			</pattern>
+		</layout>
+	</appender>
+
+    <!--&lt;!&ndash; 错误日志 &ndash;&gt;-->
+	<!--<appender name="errorAppender"-->
+		<!--class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+		<!--<file>${user.dir}/logs/project-management-error.log</file>-->
+		<!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+			<!--<fileNamePattern>${user.dir}/logs/project-management-error-%d{yyyy-MM-dd}.log-->
+			<!--</fileNamePattern>-->
+		<!--</rollingPolicy>-->
+		<!--<encoder>-->
+			<!--<pattern>%d{HH:mm:ss.SSS} %thread %X{invokeNo} %logger{40} %msg%n-->
+			<!--</pattern>-->
+		<!--</encoder>-->
+		<!--&lt;!&ndash; 错误日志过滤器   &ndash;&gt;-->
+		<!--<filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+			<!--<level>ERROR</level>-->
+			<!--<onMatch>ACCEPT</onMatch>-->
+			<!--<onMismatch>DENY</onMismatch>-->
+		<!--</filter>-->
+	<!--</appender>-->
+
+	<!-- 定义日志级别，屏蔽日志 -->
+	<!-- 
+	<logger name="org.springframework" level="error"/>
+	<logger name="com.netflix.discovery" level="error"/>
+	<logger name="org.apache.http" level="error"/>
+	-->
+	<logger name="zhweb.controller" level="info"/>
+	<root>
+		<level value="info" />
+		<appender-ref ref="stdout" />
+		<appender-ref ref="file" />
+	</root>
+
+</configuration>
