@@ -6,8 +6,13 @@ spring:
     username: root
     password: zhang962464.
     type: com.alibaba.druid.pool.DruidDataSource
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
 mybatis-plus:
   type-aliases-package: com.zhweb.entity
   mapper-locations: classpath\:mapper/*.xml
 server:
   port: 8081
+logging:
+  config: classpath:logback.xml

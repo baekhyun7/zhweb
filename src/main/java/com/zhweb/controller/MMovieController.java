@@ -25,12 +25,14 @@ import java.util.List;
 @RequestMapping("/mMovie")
 public class MMovieController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private MMovieService mMovieService;
 
     @ApiOperation(value = "sayHello", notes = "sayHello")
     @PostMapping("/hello")
     public String hello(){
+        logger.info("这里是hello的方法");
         return "hello";
     }
 

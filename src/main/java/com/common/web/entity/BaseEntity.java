@@ -1,4 +1,4 @@
-package com.web.common.web.entity;
+package com.common.web.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;

@@ -1,4 +1,4 @@
-package com.web.common.web.entity;
+package com.common.web.entity;
 
 import com.github.pagehelper.PageInfo;
 
