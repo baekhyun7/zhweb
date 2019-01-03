@@ -10,6 +10,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class HomeController {
 
     @ApiOperation(value = "add", notes = "add")
     @RequestMapping("/add")
+    @RequiresPermissions("userInfo:add")//权限管理;
     public String add(Model model){
         model.addAttribute("name","123456");
         logger.info("这里是add的方法");
@@ -50,6 +52,7 @@ public class HomeController {
     }
     @ApiOperation(value = "update", notes = "update")
     @RequestMapping("/update")
+    @RequiresPermissions("userInfo:update")//权限管理;
     public String update(Model model){
         model.addAttribute("name","123456");
         logger.info("这里是update的方法");
@@ -64,10 +67,10 @@ public class HomeController {
 
     @ApiOperation(value = "login", notes = "login")
     @RequestMapping("/login")
-    public String login(HttpServletRequest request,String name,String password) throws Exception{
+    public String login(HttpServletRequest request,String userName,String password) throws Exception{
         System.out.println("HomeController.login()");
 
-        SecurityUtils.getSubject().login(new UsernamePasswordToken(name,password));
+        SecurityUtils.getSubject().login(new UsernamePasswordToken(userName,password));
         // 登录失败从request中获取shiro处理的异常信息。
         // shiroLoginFailure:就是shiro异常类的全类名.
 

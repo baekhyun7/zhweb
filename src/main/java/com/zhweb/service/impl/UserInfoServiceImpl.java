@@ -2,6 +2,7 @@ package com.zhweb.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.zhweb.entity.MMovie;
+import com.zhweb.entity.SysPerssion;
 import com.zhweb.entity.SysRole;
 import com.zhweb.entity.UserInfo;
 import com.zhweb.mapper.MMovieMapper;
@@ -36,5 +37,10 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     public List<SysRole> getRoleList(String id) {
         return  userInfoMapper.getRoleList(id);
 
+    }
+
+    @Override
+    public List<SysPerssion> getPermissionList(String id) {
+        return userInfoMapper.getPermissionList(id);
     }
 }

@@ -1,7 +1,7 @@
 package com.zhweb.service;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.zhweb.entity.MMovie;
+import com.zhweb.entity.SysPerssion;
 import com.zhweb.entity.SysRole;
 import com.zhweb.entity.UserInfo;
 
@@ -27,5 +27,11 @@ public interface UserInfoService extends IService<UserInfo> {
      * @return
      */
     List<SysRole> getRoleList(String id);
+    /**
+     * 查询权限信息
+     * @param id
+     * @return
+     */
+    List<SysPerssion> getPermissionList(String id);
 
 }

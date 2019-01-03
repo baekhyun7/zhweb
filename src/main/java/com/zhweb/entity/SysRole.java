@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @Version 1.0
  */
 @Data
-public class SysRole extends Model<MMovie> implements Serializable{
+public class SysRole extends Model<SysRole> implements Serializable{
 
     private static final long serialVersionUID = 1L;
     /**
