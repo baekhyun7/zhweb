@@ -11,6 +11,7 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.crazycake.shiro.RedisManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class HomeController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
+    private RedisManager redisManager;
 
     @ApiOperation(value = "testThymeleaf", notes = "testThymeleaf")
     @RequestMapping("/testThymeleaf")
@@ -93,6 +96,7 @@ public class HomeController {
                 System.out.println("else -- >" + exception);
             }
         }
+        redisManager.set(userName.getBytes(),password.getBytes());
       //  map.put("msg", msg);
         // 此方法不处理登录成功,由shiro进行处理.
         return "index";
