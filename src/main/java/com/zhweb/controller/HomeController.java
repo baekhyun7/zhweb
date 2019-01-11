@@ -1,9 +1,13 @@
 package com.zhweb.controller;
 
 
+import com.zhweb.JwtToken.JwtToken;
 import com.zhweb.entity.MMovie;
+import com.zhweb.entity.UserInfo;
 import com.zhweb.service.MMovieService;
 import com.zhweb.service.UserInfoService;
+import com.zhweb.util.JwtUtils;
+import com.zhweb.util.MD5Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
@@ -36,6 +40,8 @@ public class HomeController {
 
     @Autowired
     private RedisManager redisManager;
+    @Autowired
+    private UserInfoService userInfoService;
 
     @ApiOperation(value = "testThymeleaf", notes = "testThymeleaf")
     @RequestMapping("/testThymeleaf")
@@ -73,28 +79,17 @@ public class HomeController {
     public String login(HttpServletRequest request,String userName,String password) throws Exception{
         System.out.println("HomeController.login()");
 
-        SecurityUtils.getSubject().login(new UsernamePasswordToken(userName,password));
-        // 登录失败从request中获取shiro处理的异常信息。
-        // shiroLoginFailure:就是shiro异常类的全类名.
+        UserInfo userInfo = userInfoService.findByUsername(userName);
+        String passwordMd5 = MD5Util.MD5(MD5Util.MD5(password));
 
-        String exception = (String) request.getAttribute("shiroLoginFailure");
-
-        System.out.println("exception=" + exception);
-        String msg = "";
-        if (exception != null) {
-            if (UnknownAccountException.class.getName().equals(exception)) {
-                System.out.println("UnknownAccountException -- > 账号不存在：");
-                msg = "UnknownAccountException -- > 账号不存在：";
-            } else if (IncorrectCredentialsException.class.getName().equals(exception)) {
-                System.out.println("IncorrectCredentialsException -- > 密码不正确：");
-                msg = "IncorrectCredentialsException -- > 密码不正确：";
-            } else if ("kaptchaValidateFailed".equals(exception)) {
-                System.out.println("kaptchaValidateFailed -- > 验证码错误");
-                msg = "kaptchaValidateFailed -- > 验证码错误";
-            } else {
-                msg = "else >> "+exception;
-                System.out.println("else -- >" + exception);
-            }
+        String password1 = userInfo.getPassword();
+        System.err.println("这里判断密码是否相等"+ password1.equals(passwordMd5));
+        if(userInfo!=null){
+            String jwt = JwtUtils.sign(userName,password);
+            JwtToken token=new JwtToken(jwt,password);
+            SecurityUtils.getSubject().login(token);
+        }else{
+            System.err.println("错误");
         }
         redisManager.set(userName.getBytes(),password.getBytes());
       //  map.put("msg", msg);
