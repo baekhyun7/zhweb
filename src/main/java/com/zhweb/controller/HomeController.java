@@ -76,17 +76,21 @@ public class HomeController {
 
     @ApiOperation(value = "login", notes = "login")
     @RequestMapping("/login")
+    @ResponseBody
     public String login(HttpServletRequest request,String userName,String password) throws Exception{
         System.out.println("HomeController.login()");
 
         UserInfo userInfo = userInfoService.findByUsername(userName);
-        String passwordMd5 = MD5Util.MD5(MD5Util.MD5(password));
+        //String passwordMd5 = MD5Util.MD5(MD5Util.MD5(password));
 
         String password1 = userInfo.getPassword();
-        System.err.println("这里判断密码是否相等"+ password1.equals(passwordMd5));
+
+        String jwt=null;
+        //System.err.println("这里判断密码是否相等"+ password1.equals(passwordMd5));
         if(userInfo!=null){
-            String jwt = JwtUtils.sign(userName,password);
+            jwt = JwtUtils.sign(userName,password1);
             JwtToken token=new JwtToken(jwt,password);
+            System.err.println("controller中的token"+token);
             SecurityUtils.getSubject().login(token);
         }else{
             System.err.println("错误");
@@ -94,7 +98,7 @@ public class HomeController {
         redisManager.set(userName.getBytes(),password.getBytes());
       //  map.put("msg", msg);
         // 此方法不处理登录成功,由shiro进行处理.
-        return "index";
+        return jwt;
     }
 
 

@@ -2,6 +2,8 @@ package com.zhweb.filter;
 
 import com.zhweb.JwtToken.JwtToken;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -16,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
  * @Description:
  */
 public class JwtFilter extends BasicHttpAuthenticationFilter{
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
     /**
      * 执行登录认证
      *
@@ -26,12 +30,11 @@ public class JwtFilter extends BasicHttpAuthenticationFilter{
      */
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
-        try {
-            executeLogin(request, response);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        System.err.println("-------这里jwtFileter");
+        HttpServletRequest request1 = (HttpServletRequest) request;
+        String authorization = request1.getHeader("Authorization");
+        System.err.println("-------这里jwtFileter的Authorization"+authorization);
+        return authorization != null;
     }
 
     /**
@@ -43,6 +46,8 @@ public class JwtFilter extends BasicHttpAuthenticationFilter{
         String token = httpServletRequest.getHeader("Authorization");
 
         JwtToken jwtToken = new JwtToken(token);
+        String jwt = (String)jwtToken.getPrincipal();
+        System.err.println("-------token"+jwtToken);
         // 提交给realm进行登入，如果错误他会抛出异常并被捕获
         getSubject(request, response).login(jwtToken);
         // 如果没有抛出异常则代表登入成功，返回true

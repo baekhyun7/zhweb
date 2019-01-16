@@ -4,10 +4,12 @@ import com.zhweb.filter.JwtFilter;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.DefaultSubjectDAO;
+import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
@@ -57,6 +59,11 @@ public class ShiroConfiguration {
         // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
+        // 添加自己的过滤器并且取名为jwt
+        Map<String, Filter> filterMap = new HashMap<String, Filter>(1);
+        filterMap.put("authc", new JwtFilter());
+        shiroFilterFactoryBean.setFilters(filterMap);
+
         //拦截器.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 
@@ -70,23 +77,17 @@ public class ShiroConfiguration {
 
         filterChainDefinitionMap.put("/testThymeleaf", "anon");
         filterChainDefinitionMap.put("/login", "anon");
-        // filterChainDefinitionMap.put("/add", "perms[userInfo:add1]");
-        // filterChainDefinitionMap.put("/update", "perms[userInfo:update1]");
         //<!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
         //<!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
 
-        // 添加自己的过滤器并且取名为jwt
-        Map<String, Filter> filterMap = new HashMap<String, Filter>(1);
-        filterMap.put("jwt", new JwtFilter());
-        shiroFilterFactoryBean.setFilters(filterMap);
 
         filterChainDefinitionMap.put("/**", "authc");
 
-        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
+//        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         shiroFilterFactoryBean.setLoginUrl("/toLogin");
-        // 登录成功后要跳转的链接
+//        // 登录成功后要跳转的链接
         shiroFilterFactoryBean.setSuccessUrl("/index");
-        //未授权界面;
+//        //未授权界面;
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -146,8 +147,22 @@ public class ShiroConfiguration {
     @Bean
     public DefaultWebSessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        // 设置sessionDAO
         sessionManager.setSessionDAO(redisSessionDAO());
+        // 删除无效session
+        sessionManager.setDeleteInvalidSessions(true);
+        // 设置JSESSIONID
+        sessionManager.setSessionIdCookie(cookie());
         return sessionManager;
+    }
+    @Bean
+    public SimpleCookie cookie() {
+        //  cookie的name,对应的默认是 JSESSIONID
+        SimpleCookie cookie = new SimpleCookie("SHAREJSESSIONID");
+        cookie.setHttpOnly(true);
+        //  path为 / 用于多个系统共享JSESSIONID
+        cookie.setPath("/");
+        return cookie;
     }
 
     /**
@@ -158,9 +173,14 @@ public class ShiroConfiguration {
     public RedisSessionDAO redisSessionDAO() {
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
         redisSessionDAO.setRedisManager(redisManager());
+        //  Session ID 生成器
+        redisSessionDAO.setSessionIdGenerator(sessionIdGenerator());
         return redisSessionDAO;
     }
-
+    @Bean
+    public JavaUuidSessionIdGenerator sessionIdGenerator(){
+        return new JavaUuidSessionIdGenerator();
+    }
     /**
      * 凭证匹配器
      * （由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了
