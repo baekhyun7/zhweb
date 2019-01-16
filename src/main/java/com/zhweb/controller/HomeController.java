@@ -43,36 +43,6 @@ public class HomeController {
     @Autowired
     private UserInfoService userInfoService;
 
-    @ApiOperation(value = "testThymeleaf", notes = "testThymeleaf")
-    @RequestMapping("/testThymeleaf")
-    public String testThymeleaf(Model model){
-        model.addAttribute("name","123456");
-        logger.info("这里是testThymeleaf的方法");
-        return "index";
-    }
-
-    @ApiOperation(value = "add", notes = "add")
-    @RequestMapping("/add")
-    @RequiresPermissions("userInfo:add")//权限管理;
-    public String add(Model model){
-        model.addAttribute("name","123456");
-        logger.info("这里是add的方法");
-        return "user/add";
-    }
-    @ApiOperation(value = "update", notes = "update")
-    @RequestMapping("/update")
-    @RequiresPermissions("userInfo:update")//权限管理;
-    public String update(Model model){
-        model.addAttribute("name","123456");
-        logger.info("这里是update的方法");
-        return "user/update";
-    }
-    @ApiOperation(value = "index", notes = "index")
-    @RequestMapping("/toLogin")
-    public String toLogin(){
-        logger.info("这里是toLogin的方法");
-        return "/login";
-    }
 
     @ApiOperation(value = "login", notes = "login")
     @RequestMapping("/login")
@@ -88,10 +58,9 @@ public class HomeController {
         String jwt=null;
         //System.err.println("这里判断密码是否相等"+ password1.equals(passwordMd5));
         if(userInfo!=null){
-            jwt = JwtUtils.sign(userName,password1);
-            JwtToken token=new JwtToken(jwt,password);
-            System.err.println("controller中的token"+token);
-            SecurityUtils.getSubject().login(token);
+            jwt = JwtUtils.sign(userName);
+            JwtToken jwtToken=new JwtToken(jwt,password1);
+        SecurityUtils.getSubject().login(jwtToken);
         }else{
             System.err.println("错误");
         }

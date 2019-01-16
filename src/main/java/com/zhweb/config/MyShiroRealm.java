@@ -6,16 +6,15 @@ import com.zhweb.entity.SysRole;
 import com.zhweb.entity.UserInfo;
 import com.zhweb.service.UserInfoService;
 import com.zhweb.util.JwtUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 
@@ -31,6 +30,8 @@ import java.util.List;
  * @Version 1.0
  */
 public class MyShiroRealm extends AuthorizingRealm {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private UserInfoService userInfoService;
 
@@ -54,17 +55,18 @@ public class MyShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-        System.out.println("这里是认证的方法：MyShiroRealm.doGetAuthenticationInfo()");
         System.out.println("————身份认证方法————");
 
         //获取用户的输入的账号.
         String jwttoken = (String) token.getPrincipal();
         String username = JwtUtils.getUsername(jwttoken);
-
+        if(username==null){
+            throw new AuthenticationException("token 错误");
+        }
 
 //        //获取用户的输入的账号.
 //        String username = (String)token.getPrincipal();
-        System.err.println(username);
+
         System.out.println("这是token信息" + token.getCredentials());
 //
 //        //通过username从数据库中查找 User对象，如果找到，没找到.
@@ -72,7 +74,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         UserInfo userInfo = userInfoService.findByUsername(username);
         System.out.println("----->>userInfo=" + userInfo);
         if (userInfo == null) {
-            return null;
+            throw new AuthenticationException("Username not found");
         }
 //        //加密方式;
 //        //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
@@ -85,7 +87,6 @@ public class MyShiroRealm extends AuthorizingRealm {
         SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(
                 userInfo,
                 userInfo.getPassword(),
-                ByteSource.Util.bytes(userInfo.getCredentialsSalt()),
                 this.getName());
         return simpleAuthenticationInfo;
     }
