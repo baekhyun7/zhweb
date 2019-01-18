@@ -42,10 +42,9 @@ public class JwtFilter extends BasicHttpAuthenticationFilter{
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String token = httpServletRequest.getHeader("Authorization");
-        String s = token.replaceFirst("Bearer ", "");
-        String username = JwtUtils.getUsername(s);
-        JwtToken jwtToken = new JwtToken(s);
-        boolean verify = JwtUtils.verify(s, username);
+        String username = JwtUtils.getUsername(token);
+        JwtToken jwtToken = new JwtToken(token);
+        boolean verify = JwtUtils.verify(token, username);
 //        if(jwtToken==null){
 //            return false;
 //        }

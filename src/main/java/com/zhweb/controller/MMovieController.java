@@ -5,6 +5,8 @@ import com.zhweb.entity.MMovie;
 import com.zhweb.service.MMovieService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,8 @@ public class MMovieController {
 
     @ApiOperation(value = "sayHello", notes = "sayHello")
     @PostMapping("/hello")
+    @RequiresPermissions("userInfo1:add")
+   // @RequiresPermissions(value={"user:a"})
     public String hello(){
         logger.info("这里是hello的方法");
         return "hello";
@@ -38,6 +42,7 @@ public class MMovieController {
 
     @ApiOperation(value = "query", notes = "query")
     @PostMapping("/query")
+    @RequiresPermissions("userInfo1:add")
     public List<MMovie> query(){
         List<MMovie> query = mMovieService.query();
         return query;
