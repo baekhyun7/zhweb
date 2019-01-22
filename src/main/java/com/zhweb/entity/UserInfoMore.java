@@ -1,6 +1,7 @@
 package com.zhweb.entity;
 
 import com.common.web.entity.BaseEntity;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ import lombok.Data;
  * @Description:
  */
 @Data
+@ApiModel(value = "UserInfoMore", description = "用户的更多信息")
 public class UserInfoMore extends BaseEntity{
 
     @ApiModelProperty(value="电话号码",name="telephone")

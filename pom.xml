@@ -113,7 +113,12 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.47</version>
 		</dependency>
-
+		<!--百度接口api-->
+		<dependency>
+			<groupId>com.baidu.aip</groupId>
+			<artifactId>java-sdk</artifactId>
+			<version>4.10.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
