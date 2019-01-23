@@ -14,7 +14,7 @@ public class BaiDuApiConfiguration {
     public static final String API_KEY = "Q1Fi4BTITp5waRZ7ETeZLpLf";
     public static final String SECRET_KEY = "mIXs938d6FmwvbXNIECL5NTRcg0l9B8V";
 
-    public AipImageClassify getClient(){
+    public static AipImageClassify getClient(){
         // 初始化一个AipImageClassifyClient
         AipImageClassify client = new AipImageClassify(APP_ID, API_KEY, SECRET_KEY);
 

@@ -30,6 +30,11 @@ public class CommonConstants {
      */
     public static final String USERID_PREFIX = "redis";
 
+    /**
+     * 存入redis的权限信息前缀
+     */
+    public static final String BAIKE_INFO = "baike_num";
+
 
 }
 
