@@ -45,7 +45,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter{
         String s = token.replaceFirst("Bearer ", "");
         String username = JwtUtils.getUsername(s);
         JwtToken jwtToken = new JwtToken(s);
-        boolean verify = JwtUtils.verify(s, username);
+        boolean verify = JwtUtils.verify(token, username);
 //        if(jwtToken==null){
 //            return false;
 //        }

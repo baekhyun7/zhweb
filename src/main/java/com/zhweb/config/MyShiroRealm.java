@@ -76,19 +76,19 @@ public class MyShiroRealm extends AuthorizingRealm {
         if (userInfo == null) {
             throw new AuthenticationException("Username not found");
         }
-//        //加密方式;
-//        //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
-//        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-//                userInfo,
-//                userInfo.getPassword(),
-//                ByteSource.Util.bytes(userInfo.getCredentialsSalt()),
-//                getName()
-//        );
-        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(
+        //加密方式;
+        //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 userInfo,
                 userInfo.getPassword(),
-                this.getName());
-        return simpleAuthenticationInfo;
+              //  ByteSource.Util.bytes(userInfo.getCredentialsSalt()),
+                getName()
+        );
+//        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(
+//                userInfo,
+//                userInfo.getPassword(),
+//                this.getName());
+        return authenticationInfo;
     }
 
 
@@ -115,9 +115,9 @@ public class MyShiroRealm extends AuthorizingRealm {
         * 当放到缓存中时，这样的话，doGetAuthorizationInfo就只会执行一次了，
         * 缓存过期之后会再次执行。
         */
-        System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()");
-
-        String username = JwtUtils.getUsername(principals.toString());
+        System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()"+principals.toString());
+        UserInfo userInfo1 = (UserInfo) principals;
+        String username = userInfo1.getUserName();
         System.err.println("username" + username);
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         UserInfo userInfo = (UserInfo) principals.getPrimaryPrincipal();

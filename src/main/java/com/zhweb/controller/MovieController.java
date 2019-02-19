@@ -6,13 +6,11 @@ import com.zhweb.service.MMovieService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -24,8 +22,8 @@ import java.util.List;
  */
 @Api(tags = "MMovieController的接口")
 @RestController
-@RequestMapping("/mMovie")
-public class MMovieController {
+@RequestMapping("/movie")
+public class MovieController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -41,7 +39,7 @@ public class MMovieController {
 
     @ApiOperation(value = "query", notes = "query")
     @PostMapping("/query")
-    @RequiresPermissions("user.add")
+    @RequiresPermissions("user:add")
     public List<MMovie> query(){
         List<MMovie> query = mMovieService.query();
         return query;

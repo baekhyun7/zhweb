@@ -59,7 +59,7 @@ public class HomeController {
         //System.err.println("这里判断密码是否相等"+ password1.equals(passwordMd5));
         if(userInfo!=null){
             jwt = JwtUtils.sign(userName);
-            JwtToken jwtToken=new JwtToken(jwt,password1);
+            JwtToken jwtToken=new JwtToken(jwt,password);
         SecurityUtils.getSubject().login(jwtToken);
         }else{
             System.err.println("错误");
