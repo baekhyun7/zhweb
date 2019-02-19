@@ -49,14 +49,14 @@ public class HomeController {
     @ApiOperation(value = "login", notes = "login")
     @PostMapping("/login")
     @ResponseBody
-    public RestResult login(HttpServletRequest request, String userName, String password) {
+    public RestResult login(HttpServletRequest request, @RequestParam String username, @RequestParam String password) {
 
-        UserInfo userInfo = userInfoService.findByUsername(userName);
+        UserInfo userInfo = userInfoService.findByUsername(username);
         String password1 = userInfo.getPassword();
         String password2 = MD5Util.MD5(password);
         String jwt;
         if(userInfo!=null && password1.equals(password2)){
-            jwt = JwtUtils.sign(userName);
+            jwt = JwtUtils.sign(username);
             JwtToken jwtToken=new JwtToken(jwt,password);
             SecurityUtils.getSubject().login(jwtToken);
             return RestResult.restSuccess(jwt);
