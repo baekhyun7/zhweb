@@ -2,6 +2,7 @@ package com.zhweb.entity;
 
 import com.baomidou.mybatisplus.activerecord.Model;
 import lombok.Data;
+import org.hibernate.validator.constraints.Email;
 
 import java.io.Serializable;
 
@@ -15,7 +16,7 @@ import java.io.Serializable;
  * @Version 1.0
  */
 @Data
-public class SysPerssion extends Model<SysPerssion> implements Serializable{
+public class SysPermission extends Model<SysPermission> implements Serializable{
 
     private static final long serialVersionUID = 1L;
 

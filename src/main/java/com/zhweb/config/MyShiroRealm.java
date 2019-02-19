@@ -1,22 +1,24 @@
 package com.zhweb.config;
 
+import com.alibaba.fastjson.JSON;
+import com.common.constants.CommonConstants;
 import com.zhweb.JwtToken.JwtToken;
-import com.zhweb.entity.SysPerssion;
+import com.zhweb.entity.SysPermission;
 import com.zhweb.entity.SysRole;
 import com.zhweb.entity.UserInfo;
 import com.zhweb.service.UserInfoService;
 import com.zhweb.util.JwtUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
-import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.util.List;
 
@@ -43,6 +45,8 @@ public class MyShiroRealm extends AuthorizingRealm {
         return token instanceof JwtToken;
     }
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
      * 认证信息.(身份验证)
@@ -115,22 +119,49 @@ public class MyShiroRealm extends AuthorizingRealm {
         * 当放到缓存中时，这样的话，doGetAuthorizationInfo就只会执行一次了，
         * 缓存过期之后会再次执行。
         */
+        // 登录时清除当前用户授权
+        this.clearCached();
         System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()"+principals.toString());
-        UserInfo userInfo1 = (UserInfo) principals;
-        String username = userInfo1.getUserName();
-        System.err.println("username" + username);
-        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         UserInfo userInfo = (UserInfo) principals.getPrimaryPrincipal();
-
-        List<SysRole> roleList = userInfoService.getRoleList(userInfo.getId());
-        for (SysRole sysRole : roleList) {
-            authorizationInfo.addRole(sysRole.getRole());
+        System.err.println("username" + userInfo.getUserName());
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        List<SysPermission> sysPermissions;
+        String s = stringRedisTemplate.opsForValue().get(CommonConstants.USERID_PREFIX + userInfo.getId());
+        if(s!=null){
+            System.err.println("从缓存中查询该用户的权限信息");
+            sysPermissions = JSON.parseArray(s, SysPermission.class);
+            for (SysPermission sysPermission : sysPermissions) {
+                authorizationInfo.addStringPermission(sysPermission.getPermission());
+            }
+        }else{
+            //从数据库查询该用户的权限信息
+            sysPermissions = userInfoService.getPermissionList(userInfo.getId());
+            System.err.println("从数据库查询该用户的权限信息");
+            stringRedisTemplate.opsForValue().set(CommonConstants.USERID_PREFIX + userInfo.getId(),JSON.toJSONString(sysPermissions));
         }
-        List<SysPerssion> permissionList = userInfoService.getPermissionList(userInfo.getId());
-        for (SysPerssion sysPerssion : permissionList) {
-            authorizationInfo.addStringPermission(sysPerssion.getPermission());
-        }
 
+       if(!sysPermissions.isEmpty()){
+        for (SysPermission sysPermission : sysPermissions) {
+            authorizationInfo.addStringPermission(sysPermission.getPermission());
+        }
+       }
         return authorizationInfo;
+    }
+
+    /**
+     * 清除缓存
+     */
+    public void clearCached() {
+        PrincipalCollection principals = SecurityUtils.getSubject().getPrincipals();
+        super.clearCache(principals);
+    }
+
+    /**
+     * 清空当前用户权限信息
+     */
+    public void clearCachedAuthorizationInfo() {
+        PrincipalCollection principalCollection = SecurityUtils.getSubject().getPrincipals();
+        SimplePrincipalCollection principals = new SimplePrincipalCollection(principalCollection, getName());
+        super.clearCachedAuthorizationInfo(principals);
     }
 }

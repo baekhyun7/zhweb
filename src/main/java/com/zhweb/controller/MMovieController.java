@@ -33,7 +33,8 @@ public class MMovieController {
 
     @ApiOperation(value = "sayHello", notes = "sayHello")
     @PostMapping("/hello")
-    @RequiresPermissions("user.add")
+    @RequiresPermissions("userInfo1:add")
+   // @RequiresPermissions(value={"user:a"})
     public String hello(){
         logger.info("这里是hello的方法");
         return "hello";
@@ -41,7 +42,7 @@ public class MMovieController {
 
     @ApiOperation(value = "query", notes = "query")
     @PostMapping("/query")
-    @RequiresPermissions("user.add")
+    @RequiresPermissions("userInfo1:add")
     public List<MMovie> query(){
         List<MMovie> query = mMovieService.query();
         return query;

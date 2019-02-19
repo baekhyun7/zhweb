@@ -1,7 +1,9 @@
 package com.zhweb.service;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.zhweb.entity.SysPerssion;
+import com.common.exception.BaseException;
+import com.zhweb.entity.RO.UserInfoReq;
+import com.zhweb.entity.SysPermission;
 import com.zhweb.entity.SysRole;
 import com.zhweb.entity.UserInfo;
 
@@ -32,6 +34,13 @@ public interface UserInfoService extends IService<UserInfo> {
      * @param id
      * @return
      */
-    List<SysPerssion> getPermissionList(String id);
+    List<SysPermission> getPermissionList(String id);
+
+    /**
+     * 注册用户
+     * @param userInfoReq
+     * @throws BaseException
+     */
+    void register(UserInfoReq userInfoReq) throws BaseException;
 
 }

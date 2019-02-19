@@ -1,8 +1,12 @@
 package com.zhweb.controller;
 
 
+import com.common.constants.CommonConstants;
+import com.common.exception.BaseException;
+import com.common.web.entity.RestResult;
 import com.zhweb.JwtToken.JwtToken;
 import com.zhweb.entity.MMovie;
+import com.zhweb.entity.RO.UserInfoReq;
 import com.zhweb.entity.UserInfo;
 import com.zhweb.service.MMovieService;
 import com.zhweb.service.UserInfoService;
@@ -39,37 +43,38 @@ public class HomeController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private RedisManager redisManager;
-    @Autowired
     private UserInfoService userInfoService;
 
 
     @ApiOperation(value = "login", notes = "login")
-    @RequestMapping("/login")
+    @PostMapping("/login")
     @ResponseBody
-    public String login(HttpServletRequest request,String userName,String password) throws Exception{
-        System.out.println("HomeController.login()");
+    public RestResult login(HttpServletRequest request, @RequestParam String username, @RequestParam String password) {
 
-        UserInfo userInfo = userInfoService.findByUsername(userName);
-        //String passwordMd5 = MD5Util.MD5(MD5Util.MD5(password));
-
+        UserInfo userInfo = userInfoService.findByUsername(username);
         String password1 = userInfo.getPassword();
-
-        String jwt=null;
-        //System.err.println("这里判断密码是否相等"+ password1.equals(passwordMd5));
-        if(userInfo!=null){
-            jwt = JwtUtils.sign(userName);
+        String password2 = MD5Util.MD5(password);
+        String jwt;
+        if(userInfo!=null && password1.equals(password2)){
+            jwt = JwtUtils.sign(username);
             JwtToken jwtToken=new JwtToken(jwt,password);
-        SecurityUtils.getSubject().login(jwtToken);
+            SecurityUtils.getSubject().login(jwtToken);
+            return RestResult.restSuccess(jwt);
         }else{
-            System.err.println("错误");
+            return RestResult.restFail("登录失败，请重新登录");
         }
-        redisManager.set(userName.getBytes(),password.getBytes());
-      //  map.put("msg", msg);
-        // 此方法不处理登录成功,由shiro进行处理.
-        return jwt;
     }
-
+    @ApiOperation(value = "register", notes = "register")
+    @PostMapping("/register")
+    @ResponseBody
+    public RestResult register(@RequestBody UserInfoReq userInfoReq) {
+        try {
+            userInfoService.register(userInfoReq);
+            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,"注册成功");
+        } catch (BaseException e) {
+            return RestResult.restFail(e.getMessage());
+        }
+    }
 
 
 }

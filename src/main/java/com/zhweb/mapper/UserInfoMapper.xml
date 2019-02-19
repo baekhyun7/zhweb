@@ -19,8 +19,11 @@
     <select id="getRoleList" parameterType="string" resultType="com.zhweb.entity.SysRole">
         SELECT * FROM sysrole t1 INNER JOIN sysuserrole t2 ON t1.id=t2.role_id WHERE t2.user_id=#{id}
     </select>
-    <select id="getPermissionList" parameterType="string" resultType="com.zhweb.entity.SysPerssion">
+    <select id="getPermissionList" parameterType="string" resultType="com.zhweb.entity.SysPermission">
         SELECT t2.* from sysrolepermission t1 INNER JOIN syspermission t2 ON t2.id=t1.permission_id
             INNER JOIN sysuserrole t3 on t1.role_id=t3.role_id where t3.user_id=#{id}
     </select>
+    <insert id="addUser">
+        INSERT INTO userinfo(id,user_name,name,password) VALUES(#{id}, #{userName},#{userName},#{password})
+    </insert>
 </mapper>
