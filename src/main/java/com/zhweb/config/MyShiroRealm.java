@@ -80,19 +80,19 @@ public class MyShiroRealm extends AuthorizingRealm {
         if (userInfo == null) {
             throw new AuthenticationException("Username not found");
         }
-//        //加密方式;
-//        //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
-//        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-//                userInfo,
-//                userInfo.getPassword(),
-//                ByteSource.Util.bytes(userInfo.getCredentialsSalt()),
-//                getName()
-//        );
-        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(
+        //加密方式;
+        //交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 userInfo,
                 userInfo.getPassword(),
-                this.getName());
-        return simpleAuthenticationInfo;
+              //  ByteSource.Util.bytes(userInfo.getCredentialsSalt()),
+                getName()
+        );
+//        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(
+//                userInfo,
+//                userInfo.getPassword(),
+//                this.getName());
+        return authenticationInfo;
     }
 
 
@@ -122,7 +122,6 @@ public class MyShiroRealm extends AuthorizingRealm {
         // 登录时清除当前用户授权
         this.clearCached();
         System.out.println("权限配置-->MyShiroRealm.doGetAuthorizationInfo()"+principals.toString());
-
         UserInfo userInfo = (UserInfo) principals.getPrimaryPrincipal();
         System.err.println("username" + userInfo.getUserName());
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();

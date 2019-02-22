@@ -41,7 +41,7 @@ public class ShiroConfiguration {
 
     // 下面两个方法对 注解权限起作用有很大的关系，请把这两个方法，放在配置的最上面
     @Bean(name = "lifecycleBeanPostProcessor")
-    public LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
+    public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
 
@@ -77,7 +77,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/v2/**", "anon");
         filterChainDefinitionMap.put("/swagger-resources/**", "anon");
 
-        //filterChainDefinitionMap.put("/testThymeleaf", "anon");
+        filterChainDefinitionMap.put("/mMovie/hello", "perms[userInfo.add]");
 
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/register", "anon");
@@ -92,7 +92,7 @@ public class ShiroConfiguration {
 //        // 登录成功后要跳转的链接
        // shiroFilterFactoryBean.setSuccessUrl("/index");
 //        //未授权界面;
-        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
+//        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
