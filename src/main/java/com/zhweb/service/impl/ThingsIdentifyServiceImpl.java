@@ -10,6 +10,7 @@ import com.zhweb.entity.ResultInfo;
 import com.zhweb.service.ThingsIdentifyService;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,7 @@ public class ThingsIdentifyServiceImpl implements ThingsIdentifyService {
 
 
     @Override
-    public List<ResultInfo> plantDetect(String image)throws BaseException {
+    public List<ResultInfo> plantDetect(byte[] image)throws BaseException {
         AipImageClassify client = BaiDuApiConfiguration.getClient();
         HashMap<String, String> options = new HashMap<String, String>();
         options.put(CommonConstants.BAIKE_INFO, "5");
@@ -35,7 +36,7 @@ public class ThingsIdentifyServiceImpl implements ThingsIdentifyService {
     }
 
     @Override
-    public List<ResultInfo> animalDetect(String image) throws BaseException {
+    public List<ResultInfo> animalDetect(byte[] image) throws BaseException {
         AipImageClassify client = BaiDuApiConfiguration.getClient();
         HashMap<String, String> options = new HashMap<String, String>();
         options.put(CommonConstants.BAIKE_INFO, "5");
@@ -45,7 +46,7 @@ public class ThingsIdentifyServiceImpl implements ThingsIdentifyService {
     }
 
     @Override
-    public List<ResultInfo> carDetect(String image) throws BaseException {
+    public List<ResultInfo> carDetect(byte[] image) throws BaseException {
         AipImageClassify client = BaiDuApiConfiguration.getClient();
         HashMap<String, String> options = new HashMap<String, String>();
         options.put(CommonConstants.BAIKE_INFO, "5");
@@ -55,7 +56,7 @@ public class ThingsIdentifyServiceImpl implements ThingsIdentifyService {
     }
 
     @Override
-    public List<ResultInfo> dishDetect(String image) throws BaseException {
+    public List<ResultInfo> dishDetect(byte[] image) throws BaseException {
         AipImageClassify client = BaiDuApiConfiguration.getClient();
         HashMap<String, String> options = new HashMap<String, String>();
         options.put(CommonConstants.BAIKE_INFO, "5");
@@ -65,11 +66,12 @@ public class ThingsIdentifyServiceImpl implements ThingsIdentifyService {
     }
 
     @Override
-    public List<ResultInfo> advancedGeneral(String image) throws BaseException {
+    public List<ResultInfo> advancedGeneral(MultipartFile image) throws Exception {
         AipImageClassify client = BaiDuApiConfiguration.getClient();
         HashMap<String, String> options = new HashMap<String, String>();
         options.put(CommonConstants.BAIKE_INFO, "5");
-        JSONObject jsonObject = client.advancedGeneral(image, options);
+        byte[] bytes = image.getBytes();
+        JSONObject jsonObject = client.advancedGeneral(bytes, options);
         IdentifyResult identifyResult = JSON.parseObject(jsonObject.toString(2), IdentifyResult.class);
         return identifyResult.getResult();
     }

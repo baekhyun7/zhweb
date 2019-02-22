@@ -2,6 +2,7 @@ package com.zhweb.filter;
 
 import com.zhweb.JwtToken.JwtToken;
 import com.zhweb.util.JwtUtils;
+import com.zhweb.util.StringUtil;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +43,11 @@ public class JwtFilter extends BasicHttpAuthenticationFilter{
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String token = httpServletRequest.getHeader("Authorization");
-        String username = JwtUtils.getUsername(token);
-        JwtToken jwtToken = new JwtToken(token);
-        boolean verify = JwtUtils.verify(token, username);
+        String s = StringUtil.trimFirstAndLastChar(token, '"');
+        System.err.println("token"+token);
+        String username = JwtUtils.getUsername(s);
+        JwtToken jwtToken = new JwtToken(s);
+        boolean verify = JwtUtils.verify(s, username);
 //        if(jwtToken==null){
 //            return false;
 //        }

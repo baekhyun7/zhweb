@@ -2,6 +2,7 @@ package com.zhweb.service;
 
 import com.common.exception.BaseException;
 import com.zhweb.entity.ResultInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface ThingsIdentifyService {
      * @auther: ZH
      * @date: 2019/1/23 0023 9:07
      */
-    List<ResultInfo> plantDetect(String image)throws BaseException;
+    List<ResultInfo> plantDetect(byte[] image)throws BaseException;
 
     /**
      *
@@ -33,7 +34,7 @@ public interface ThingsIdentifyService {
      * @auther: ZH
      * @date: 2019/1/23
      */
-    List<ResultInfo> animalDetect(String image)throws BaseException;
+    List<ResultInfo> animalDetect(byte[] image)throws BaseException;
 
     /**
      *
@@ -44,7 +45,7 @@ public interface ThingsIdentifyService {
      * @auther: ZH
      * @date: 2019/1/23 0023 14:31
      */
-    List<ResultInfo> carDetect(String image)throws BaseException;
+    List<ResultInfo> carDetect(byte[] image)throws BaseException;
 
     /**
      *
@@ -55,7 +56,7 @@ public interface ThingsIdentifyService {
      * @auther: ZH
      * @date: 2019/1/23 0023 14:41
      */
-    List<ResultInfo> dishDetect(String image)throws BaseException;
+    List<ResultInfo> dishDetect(byte[] image)throws BaseException;
 
     /**
      *
@@ -66,5 +67,5 @@ public interface ThingsIdentifyService {
      * @auther: ZH
      * @date: 2019/1/23 0023 14:58
      */
-    List<ResultInfo> advancedGeneral(String image)throws BaseException;
+    List<ResultInfo> advancedGeneral(MultipartFile image)throws Exception;
 }

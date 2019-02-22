@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class ThingsIdentifyController {
 
     @ApiOperation(value = "plantDetect", notes = "plantDetect")
     @PostMapping("/plantDetect")
-    public RestResult<List<ResultInfo>> plantDetect(@RequestParam String image){
+    public RestResult<List<ResultInfo>> plantDetect(@RequestParam byte[] image){
         List<ResultInfo> resultInfos = null;
         try {
             resultInfos = thingsIdentifyService.plantDetect(image);
@@ -46,7 +47,7 @@ public class ThingsIdentifyController {
 
     @ApiOperation(value = "animalDetect", notes = "animalDetect")
     @PostMapping("/animalDetect")
-    public RestResult<List<ResultInfo>> animalDetect(@RequestParam String image){
+    public RestResult<List<ResultInfo>> animalDetect(@RequestParam byte[] image){
         List<ResultInfo> resultInfos = null;
         try {
             resultInfos = thingsIdentifyService.animalDetect(image);
@@ -59,7 +60,7 @@ public class ThingsIdentifyController {
 
     @ApiOperation(value = "carDetect", notes = "carDetect")
     @PostMapping("/carDetect")
-    public RestResult<List<ResultInfo>> carDetect(@RequestParam String image){
+    public RestResult<List<ResultInfo>> carDetect(@RequestParam byte[] image){
         List<ResultInfo> resultInfos = null;
         try {
             resultInfos = thingsIdentifyService.carDetect(image);
@@ -72,7 +73,7 @@ public class ThingsIdentifyController {
 
     @ApiOperation(value = "dishDetect", notes = "dishDetect")
     @PostMapping("/dishDetect")
-    public RestResult<List<ResultInfo>> dishDetect(@RequestParam String image){
+    public RestResult<List<ResultInfo>> dishDetect(@RequestParam byte[] image){
         List<ResultInfo> resultInfos = null;
         try {
             resultInfos = thingsIdentifyService.dishDetect(image);
@@ -85,13 +86,15 @@ public class ThingsIdentifyController {
 
     @ApiOperation(value = "advancedGeneral", notes = "advancedGeneral")
     @PostMapping("/advancedGeneral")
-    public RestResult<List<ResultInfo>> advancedGeneral(@RequestParam String image){
+    public RestResult<List<ResultInfo>> advancedGeneral(@RequestParam MultipartFile file){
         List<ResultInfo> resultInfos = null;
         try {
-            resultInfos = thingsIdentifyService.advancedGeneral(image);
+            resultInfos = thingsIdentifyService.advancedGeneral(file);
             return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,resultInfos);
         } catch (BaseException e) {
             logger.error(e.getMessage());
+            return RestResult.restFail("通用物品识别出现异常");
+        } catch (Exception e) {
             return RestResult.restFail("通用物品识别出现异常");
         }
     }
