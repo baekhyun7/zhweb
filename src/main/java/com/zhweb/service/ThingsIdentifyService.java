@@ -23,7 +23,7 @@ public interface ThingsIdentifyService {
      * @auther: ZH
      * @date: 2019/1/23 0023 9:07
      */
-    List<ResultInfo> plantDetect(byte[] image)throws BaseException;
+    List<ResultInfo> plantDetect(MultipartFile image)throws Exception;
 
     /**
      *
@@ -34,7 +34,7 @@ public interface ThingsIdentifyService {
      * @auther: ZH
      * @date: 2019/1/23
      */
-    List<ResultInfo> animalDetect(byte[] image)throws BaseException;
+    List<ResultInfo> animalDetect(MultipartFile image)throws Exception;
 
     /**
      *
@@ -45,7 +45,7 @@ public interface ThingsIdentifyService {
      * @auther: ZH
      * @date: 2019/1/23 0023 14:31
      */
-    List<ResultInfo> carDetect(byte[] image)throws BaseException;
+    List<ResultInfo> carDetect(MultipartFile image)throws Exception;
 
     /**
      *
@@ -56,7 +56,7 @@ public interface ThingsIdentifyService {
      * @auther: ZH
      * @date: 2019/1/23 0023 14:41
      */
-    List<ResultInfo> dishDetect(byte[] image)throws BaseException;
+    List<ResultInfo> dishDetect(MultipartFile image)throws Exception;
 
     /**
      *

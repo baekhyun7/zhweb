@@ -34,7 +34,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     private UserInfoMoreMapper userInfoMoreMapper;
 
     @Override
-    public UserInfo findByUsername(String username) {
+    public UserInfo findByUsername(String username) throws BaseException{
         return userInfoMapper.findByUsername(username);
     }
 

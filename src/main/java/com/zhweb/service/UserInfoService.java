@@ -21,7 +21,7 @@ public interface UserInfoService extends IService<UserInfo> {
     /**
      * 通过username查找用户信息;
      */
-     UserInfo findByUsername(String username);
+     UserInfo findByUsername(String username) throws BaseException;
 
     /**
      * 查询角色信息

@@ -25,42 +25,46 @@ public class ThingsIdentifyServiceImpl implements ThingsIdentifyService {
 
 
     @Override
-    public List<ResultInfo> plantDetect(byte[] image)throws BaseException {
+    public List<ResultInfo> plantDetect(MultipartFile image)throws Exception {
         AipImageClassify client = BaiDuApiConfiguration.getClient();
         HashMap<String, String> options = new HashMap<String, String>();
         options.put(CommonConstants.BAIKE_INFO, "5");
-        JSONObject jsonObject = client.plantDetect(image, options);
+        byte[] bytes = image.getBytes();
+        JSONObject jsonObject = client.plantDetect(bytes, options);
         IdentifyResult identifyResult = JSON.parseObject(jsonObject.toString(2), IdentifyResult.class);
         return identifyResult.getResult();
 
     }
 
     @Override
-    public List<ResultInfo> animalDetect(byte[] image) throws BaseException {
+    public List<ResultInfo> animalDetect(MultipartFile image) throws Exception {
         AipImageClassify client = BaiDuApiConfiguration.getClient();
         HashMap<String, String> options = new HashMap<String, String>();
         options.put(CommonConstants.BAIKE_INFO, "5");
-        JSONObject jsonObject = client.animalDetect(image, options);
+        byte[] bytes = image.getBytes();
+        JSONObject jsonObject = client.animalDetect(bytes, options);
         IdentifyResult identifyResult = JSON.parseObject(jsonObject.toString(2), IdentifyResult.class);
         return identifyResult.getResult();
     }
 
     @Override
-    public List<ResultInfo> carDetect(byte[] image) throws BaseException {
+    public List<ResultInfo> carDetect(MultipartFile image) throws Exception {
         AipImageClassify client = BaiDuApiConfiguration.getClient();
         HashMap<String, String> options = new HashMap<String, String>();
         options.put(CommonConstants.BAIKE_INFO, "5");
-        JSONObject jsonObject = client.carDetect(image, options);
+        byte[] bytes = image.getBytes();
+        JSONObject jsonObject = client.carDetect(bytes, options);
         IdentifyResult identifyResult = JSON.parseObject(jsonObject.toString(2), IdentifyResult.class);
         return identifyResult.getResult();
     }
 
     @Override
-    public List<ResultInfo> dishDetect(byte[] image) throws BaseException {
+    public List<ResultInfo> dishDetect(MultipartFile image) throws Exception {
         AipImageClassify client = BaiDuApiConfiguration.getClient();
         HashMap<String, String> options = new HashMap<String, String>();
         options.put(CommonConstants.BAIKE_INFO, "5");
-        JSONObject jsonObject = client.dishDetect(image, options);
+        byte[] bytes = image.getBytes();
+        JSONObject jsonObject = client.dishDetect(bytes, options);
         IdentifyResult identifyResult = JSON.parseObject(jsonObject.toString(2), IdentifyResult.class);
         return identifyResult.getResult();
     }

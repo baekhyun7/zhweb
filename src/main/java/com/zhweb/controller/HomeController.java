@@ -51,18 +51,27 @@ public class HomeController {
     @ResponseBody
     public RestResult login(HttpServletRequest request, @RequestParam String username, @RequestParam String password) {
 
-        UserInfo userInfo = userInfoService.findByUsername(username);
-        String password1 = userInfo.getPassword();
-        String password2 = MD5Util.MD5(password);
-        String jwt;
-        if(userInfo!=null && password1.equals(password2)){
-            jwt = JwtUtils.sign(username);
-            JwtToken jwtToken=new JwtToken(jwt,password);
-            SecurityUtils.getSubject().login(jwtToken);
-            return RestResult.restSuccess(jwt);
-        }else{
-            return RestResult.restFail("登录失败，请重新登录");
+        UserInfo userInfo = null;
+        try {
+            userInfo = userInfoService.findByUsername(username);
+            if(userInfo == null){
+                throw new BaseException("无该用户名");
+            }
+            String password1 = userInfo.getPassword();
+            String password2 = MD5Util.MD5(password);
+            String jwt;
+            if(userInfo!=null && password1.equals(password2)){
+                jwt = JwtUtils.sign(username);
+                JwtToken jwtToken=new JwtToken(jwt,password);
+                SecurityUtils.getSubject().login(jwtToken);
+                return RestResult.restSuccess(jwt);
+            }else{
+                return RestResult.restFail("登录失败，请重新登录");
+            }
+        } catch (BaseException e) {
+            return RestResult.restFail(e.getMessage());
         }
+
     }
     @ApiOperation(value = "register", notes = "register")
     @PostMapping("/register")

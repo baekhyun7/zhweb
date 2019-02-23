@@ -34,63 +34,71 @@ public class ThingsIdentifyController {
 
     @ApiOperation(value = "plantDetect", notes = "plantDetect")
     @PostMapping("/plantDetect")
-    public RestResult<List<ResultInfo>> plantDetect(@RequestParam byte[] image){
+    public RestResult<List<ResultInfo>> plantDetect(@RequestParam MultipartFile file) {
         List<ResultInfo> resultInfos = null;
         try {
-            resultInfos = thingsIdentifyService.plantDetect(image);
-            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,resultInfos);
+            resultInfos = thingsIdentifyService.plantDetect(file);
+            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE, resultInfos);
         } catch (BaseException e) {
             logger.error(e.getMessage());
             return RestResult.restFail("植物识别出现异常");
-            }
+        } catch (Exception e) {
+            return RestResult.restFail("菜品识别出现异常");
+        }
     }
 
     @ApiOperation(value = "animalDetect", notes = "animalDetect")
     @PostMapping("/animalDetect")
-    public RestResult<List<ResultInfo>> animalDetect(@RequestParam byte[] image){
+    public RestResult<List<ResultInfo>> animalDetect(@RequestParam MultipartFile file) {
         List<ResultInfo> resultInfos = null;
         try {
-            resultInfos = thingsIdentifyService.animalDetect(image);
-            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,resultInfos);
+            resultInfos = thingsIdentifyService.animalDetect(file);
+            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE, resultInfos);
         } catch (BaseException e) {
             logger.error(e.getMessage());
             return RestResult.restFail("动物识别出现异常");
+        } catch (Exception e) {
+            return RestResult.restFail("菜品识别出现异常");
         }
     }
 
     @ApiOperation(value = "carDetect", notes = "carDetect")
     @PostMapping("/carDetect")
-    public RestResult<List<ResultInfo>> carDetect(@RequestParam byte[] image){
+    public RestResult<List<ResultInfo>> carDetect(@RequestParam MultipartFile file) {
         List<ResultInfo> resultInfos = null;
         try {
-            resultInfos = thingsIdentifyService.carDetect(image);
-            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,resultInfos);
+            resultInfos = thingsIdentifyService.carDetect(file);
+            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE, resultInfos);
         } catch (BaseException e) {
             logger.error(e.getMessage());
             return RestResult.restFail("车牌识别出现异常");
+        } catch (Exception e) {
+            return RestResult.restFail("菜品识别出现异常");
         }
     }
 
     @ApiOperation(value = "dishDetect", notes = "dishDetect")
     @PostMapping("/dishDetect")
-    public RestResult<List<ResultInfo>> dishDetect(@RequestParam byte[] image){
+    public RestResult<List<ResultInfo>> dishDetect(@RequestParam MultipartFile file) {
         List<ResultInfo> resultInfos = null;
         try {
-            resultInfos = thingsIdentifyService.dishDetect(image);
-            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,resultInfos);
+            resultInfos = thingsIdentifyService.dishDetect(file);
+            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE, resultInfos);
         } catch (BaseException e) {
             logger.error(e.getMessage());
+            return RestResult.restFail("菜品识别出现异常");
+        } catch (Exception e) {
             return RestResult.restFail("菜品识别出现异常");
         }
     }
 
     @ApiOperation(value = "advancedGeneral", notes = "advancedGeneral")
     @PostMapping("/advancedGeneral")
-    public RestResult<List<ResultInfo>> advancedGeneral(@RequestParam MultipartFile file){
+    public RestResult<List<ResultInfo>> advancedGeneral(@RequestParam MultipartFile file) {
         List<ResultInfo> resultInfos = null;
         try {
             resultInfos = thingsIdentifyService.advancedGeneral(file);
-            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,resultInfos);
+            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE, resultInfos);
         } catch (BaseException e) {
             logger.error(e.getMessage());
             return RestResult.restFail("通用物品识别出现异常");
