@@ -2,6 +2,7 @@ package com.zhweb.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.common.exception.BaseException;
+import com.zhweb.JwtToken.JwtToken;
 import com.zhweb.entity.RO.UserInfoReq;
 import com.zhweb.entity.SysPermission;
 import com.zhweb.entity.SysRole;
@@ -10,8 +11,10 @@ import com.zhweb.entity.UserInfoMore;
 import com.zhweb.mapper.UserInfoMapper;
 import com.zhweb.mapper.UserInfoMoreMapper;
 import com.zhweb.service.UserInfoService;
+import com.zhweb.util.JwtUtils;
 import com.zhweb.util.MD5Util;
 import com.zhweb.util.UUIDUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,5 +73,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
         userInfoMapper.addUser(userInfo);
         userInfoMoreMapper.addUserInfo(userInfoMore);
+
+
+
     }
 }
