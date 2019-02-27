@@ -12,6 +12,8 @@ import lombok.Data;
 @Data
 public class UserInfoReq {
 
+    private UserInfoReq userInfoReq;
+
     @ApiModelProperty(value="电话号码",name="telephone")
     private String telephone;
 

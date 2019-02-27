@@ -60,3 +60,12 @@ CREATE TABLE `sysrolepermission` (
   `role_id` varchar(32) DEFAULT NULL COMMENT '角色id',
   `permission_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '权限id'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- ----------------------------
+-- 用户更多信息表（userinfo_more）
+-- ----------------------------
+CREATE TABLE `userinfo_more` (
+`user_id` varchar(32) DEFAULT NULL COMMENT '用户id',
+`telephone` varchar(15) DEFAULT NULL COMMENT '用户电话',
+`address` varchar(255) DEFAULT NULL COMMENT '用户地址',
+`QQ` int(15) DEFAULT NULL COMMENT '用户QQ'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
