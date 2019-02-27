@@ -80,7 +80,7 @@ public class HomeController {
         try {
             userInfoService.register(userInfoReq);
             String jwt = JwtUtils.sign(userInfoReq.getUserName());
-            JwtToken jwtToken=new JwtToken(jwt,MD5Util.MD5(userInfoReq.getPassword()));
+            JwtToken jwtToken=new JwtToken(jwt,userInfoReq.getPassword());
             SecurityUtils.getSubject().login(jwtToken);
             return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,"注册成功",jwt);
         } catch (BaseException e) {

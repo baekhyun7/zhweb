@@ -67,7 +67,6 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
         UserInfoMore userInfoMore=new UserInfoMore();
         userInfoMore.setId(id);
-        userInfoMore.setAddress(userInfoReq.getAddress());
         userInfoMore.setQq(userInfoReq.getQq());
         userInfoMore.setTelephone(userInfoReq.getTelephone());
 

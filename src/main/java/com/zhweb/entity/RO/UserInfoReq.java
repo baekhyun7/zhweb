@@ -10,13 +10,10 @@ import lombok.Data;
  * @Description:
  */
 @Data
-public class UserInfoReq extends BaseEntity{
+public class UserInfoReq {
 
     @ApiModelProperty(value="电话号码",name="telephone")
     private String telephone;
-
-    @ApiModelProperty(value="地址",name="address")
-    private String address;
 
     @ApiModelProperty(value="qq",name="qq")
     private String qq;
@@ -26,4 +23,6 @@ public class UserInfoReq extends BaseEntity{
 
     @ApiModelProperty(value="密码",name="password")
     private String password;
+
+
 }

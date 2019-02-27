@@ -26,7 +26,7 @@ public class CorsFilter implements Filter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,Authorization");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with,Authorization,Content-Type,XFILENAME,XFILECATEGORY,XFILESIZE");
         System.out.println("*********************************过滤器被使用**************************");
         if (request.getMethod().equals("OPTIONS")){
             //跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些源站有权限访问哪些资源。
