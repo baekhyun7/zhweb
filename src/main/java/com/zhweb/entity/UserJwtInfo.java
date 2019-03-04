@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 功能描述： 添加类/接口功能描述
@@ -37,11 +38,16 @@ public class UserJwtInfo  implements Serializable{
     /**
      * 角色
      */
-    private String role;
+    private List<String> role;
 
     /**
      * 权限
      */
-    private String permission;
+    private List<String> permission;
+
+    /**
+     * token
+     */
+    private String token;
 
 }

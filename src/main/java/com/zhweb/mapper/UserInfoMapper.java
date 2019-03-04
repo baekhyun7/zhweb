@@ -5,6 +5,7 @@ import com.zhweb.entity.SysPermission;
 import com.zhweb.entity.SysRole;
 import com.zhweb.entity.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -26,5 +27,7 @@ public interface UserInfoMapper extends BaseMapper<UserInfo> {
     List<SysPermission> getPermissionList(String id);
 
     void addUser(UserInfo userInfo);
+
+    void addRole(@Param("user_id") String user_id, @Param("role_id") String role_id);
 
 }

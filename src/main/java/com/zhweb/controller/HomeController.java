@@ -5,9 +5,8 @@ import com.common.constants.CommonConstants;
 import com.common.exception.BaseException;
 import com.common.web.entity.RestResult;
 import com.zhweb.JwtToken.JwtToken;
-import com.zhweb.entity.MMovie;
+import com.zhweb.entity.*;
 import com.zhweb.entity.RO.UserInfoReq;
-import com.zhweb.entity.UserInfo;
 import com.zhweb.service.MMovieService;
 import com.zhweb.service.UserInfoService;
 import com.zhweb.util.JwtUtils;
@@ -61,10 +60,21 @@ public class HomeController {
             String password2 = MD5Util.MD5(password);
             String jwt;
             if(userInfo!=null && password1.equals(password2)){
+                List<String> roleList = userInfoService.getRoleListString(userInfo.getId());
+                List<String> permissionList = userInfoService.getPermissionListString(userInfo.getId());
                 jwt = JwtUtils.sign(username);
                 JwtToken jwtToken=new JwtToken(jwt,password);
                 SecurityUtils.getSubject().login(jwtToken);
-                return RestResult.restSuccess(jwt);
+
+                UserJwtInfo userJwtInfo = new UserJwtInfo();
+                userJwtInfo.setId(userInfo.getId());
+                userJwtInfo.setPassword(userInfo.getPassword());
+                userJwtInfo.setName(userInfo.getUserName());
+                userJwtInfo.setToken(jwt);
+                userJwtInfo.setPermission(permissionList);
+                userJwtInfo.setRole(roleList);
+
+                return RestResult.restSuccess(userJwtInfo);
             }else{
                 return RestResult.restFail("登录失败，请重新登录");
             }

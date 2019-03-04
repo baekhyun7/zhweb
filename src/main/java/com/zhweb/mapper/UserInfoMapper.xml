@@ -26,4 +26,7 @@
     <insert id="addUser">
         INSERT INTO userinfo(id,user_name,name,password) VALUES(#{id}, #{userName},#{userName},#{password})
     </insert>
+    <insert id="addRole">
+        INSERT INTO sysuserrole(user_id, role_id) VALUES(#{user_id}, #{role_id})
+    </insert>
 </mapper>

@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author zh
@@ -21,23 +21,43 @@ public interface UserInfoService extends IService<UserInfo> {
     /**
      * 通过username查找用户信息;
      */
-     UserInfo findByUsername(String username) throws BaseException;
+    UserInfo findByUsername(String username) throws BaseException;
 
     /**
      * 查询角色信息
+     *
      * @param id
      * @return
      */
     List<SysRole> getRoleList(String id);
+
+    /**
+     * 查询角色信息 string
+     *
+     * @param id
+     * @return
+     */
+    List<String> getRoleListString(String id) throws BaseException;
+
     /**
      * 查询权限信息
+     *
      * @param id
      * @return
      */
     List<SysPermission> getPermissionList(String id);
 
     /**
+     * 查询权限信息 string
+     *
+     * @param id
+     * @return
+     */
+    List<String> getPermissionListString(String id) throws BaseException;
+
+    /**
      * 注册用户
+     *
      * @param userInfoReq
      * @throws BaseException
      */
