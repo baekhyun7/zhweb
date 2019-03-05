@@ -41,10 +41,11 @@ public class UserController {
     @ResponseBody
     public RestResult query(@RequestBody PageReq pageReq) {
         try {
-            Page page = new Page(pageReq.getCurPage(), pageReq.getPageSize());
-            Page query = userInfoService.query(page, pageReq.getUserName());
-            List<UserInfo> records = query.getRecords();
-            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE, records);
+            PageHelper.startPage(pageReq.getCurPage(), pageReq.getPageSize());
+            List<UserInfo> query = userInfoService.query(pageReq.getUserName());
+            PageInfo pageInfo = new PageInfo(query);
+            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,new DataGrid<>(pageInfo.getTotal(),query)
+            );
         } catch (BaseException e) {
             return RestResult.restFail("查询失败！");
         }

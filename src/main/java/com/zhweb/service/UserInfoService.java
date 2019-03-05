@@ -69,6 +69,6 @@ public interface UserInfoService extends IService<UserInfo> {
      * @return
      * @throws BaseException
      */
-    Page query(Page<UserInfo> page, String userName) throws BaseException;
+    List<UserInfo> query(String userName) throws BaseException;
 
 }

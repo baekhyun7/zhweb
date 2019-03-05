@@ -17,13 +17,13 @@ public class DataGrid<T> {
     /**
      * 分页数据总条数
      */
-    private int total;
+    private long total;
     /**
      * 分页数据
      */
     private T items;
 
-    public int getTotal() {
+    public long getTotal() {
         return total;
     }
 
@@ -42,7 +42,7 @@ public class DataGrid<T> {
     public DataGrid() {
     }
 
-    public DataGrid(int total, T items) {
+    public DataGrid(long total, T items) {
         super();
         this.total = total;
         this.items = items;

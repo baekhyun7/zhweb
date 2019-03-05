@@ -22,7 +22,11 @@ spring:
 mybatis-plus:
   type-aliases-package: com.zhweb.entity
   mapper-locations: classpath\:mapper/*.xml
-
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
 server:
   port: 8081
 logging:

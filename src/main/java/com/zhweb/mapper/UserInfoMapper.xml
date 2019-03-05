@@ -31,7 +31,7 @@
     </insert>
     <select id="query" parameterType="string" resultMap="UserInfoMap">
         SELECT * FROM userinfo
-        <if test="userName != null">
+        <if test="userName != null and userName != ''">
             <where>
                 user_name = #{userName}
             </where>

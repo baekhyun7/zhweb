@@ -107,8 +107,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     }
 
     @Override
-    public Page<UserInfo> query(Page<UserInfo> page, String userName) throws BaseException {
-        page.setRecords(userInfoMapper.query(page,userName));
-        return page;
+    public List<UserInfo> query(String userName) throws BaseException {
+        List<UserInfo> query = userInfoMapper.query(userName);
+        return query;
     }
 }

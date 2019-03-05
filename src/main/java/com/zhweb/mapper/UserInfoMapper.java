@@ -32,6 +32,6 @@ public interface UserInfoMapper extends BaseMapper<UserInfo> {
 
     void addRole(@Param("user_id") String user_id, @Param("role_id") String role_id);
 
-    List<UserInfo> query(Pagination page, @Param("userName")String userName);
+    List<UserInfo> query(@Param("userName")String userName);
 
 }
