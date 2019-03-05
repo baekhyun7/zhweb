@@ -17,17 +17,17 @@ public class DataGrid<T> {
     /**
      * 分页数据总条数
      */
-    private Long total;
+    private int total;
     /**
      * 分页数据
      */
     private T items;
 
-    public Long getTotal() {
+    public int getTotal() {
         return total;
     }
 
-    public void setTotal(Long total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 
@@ -42,7 +42,7 @@ public class DataGrid<T> {
     public DataGrid() {
     }
 
-    public DataGrid(Long total, T items) {
+    public DataGrid(int total, T items) {
         super();
         this.total = total;
         this.items = items;
@@ -54,15 +54,4 @@ public class DataGrid<T> {
     }
 
 
-    /**
-     * 根据list构建DataGrid
-     *
-     * @param data 分页数据
-     * @param <T>  泛型
-     * @return DataGrid
-     */
-    public static <T> DataGrid<List<T>> builder(List<T> data) {
-        PageInfo<T> page = new PageInfo<>(data);
-        return new DataGrid<>(page.getTotal(), page.getList());
-    }
 }

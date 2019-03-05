@@ -1,5 +1,6 @@
 package com.zhweb.service;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.IService;
 import com.common.exception.BaseException;
 import com.zhweb.entity.RO.UserInfoReq;
@@ -62,5 +63,12 @@ public interface UserInfoService extends IService<UserInfo> {
      * @throws BaseException
      */
     void register(UserInfoReq userInfoReq) throws BaseException;
+
+    /**
+     * 查询用户
+     * @return
+     * @throws BaseException
+     */
+    Page query(Page<UserInfo> page, String userName) throws BaseException;
 
 }

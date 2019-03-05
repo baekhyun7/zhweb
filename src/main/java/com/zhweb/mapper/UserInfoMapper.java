@@ -1,6 +1,8 @@
 package com.zhweb.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.zhweb.entity.SysPermission;
 import com.zhweb.entity.SysRole;
 import com.zhweb.entity.UserInfo;
@@ -29,5 +31,7 @@ public interface UserInfoMapper extends BaseMapper<UserInfo> {
     void addUser(UserInfo userInfo);
 
     void addRole(@Param("user_id") String user_id, @Param("role_id") String role_id);
+
+    List<UserInfo> query(Pagination page, @Param("userName")String userName);
 
 }

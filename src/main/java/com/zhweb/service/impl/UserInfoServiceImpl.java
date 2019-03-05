@@ -1,7 +1,9 @@
 package com.zhweb.service.impl;
 
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.common.exception.BaseException;
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.zhweb.JwtToken.JwtToken;
 import com.zhweb.entity.RO.UserInfoReq;
@@ -102,5 +104,11 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         userInfoMoreMapper.addUserInfo(userInfoMore);
 
 
+    }
+
+    @Override
+    public Page<UserInfo> query(Page<UserInfo> page, String userName) throws BaseException {
+        page.setRecords(userInfoMapper.query(page,userName));
+        return page;
     }
 }

@@ -29,4 +29,12 @@
     <insert id="addRole">
         INSERT INTO sysuserrole(user_id, role_id) VALUES(#{user_id}, #{role_id})
     </insert>
+    <select id="query" parameterType="string" resultMap="UserInfoMap">
+        SELECT * FROM userinfo
+        <if test="userName != null">
+            <where>
+                user_name = #{userName}
+            </where>
+        </if>
+    </select>
 </mapper>
