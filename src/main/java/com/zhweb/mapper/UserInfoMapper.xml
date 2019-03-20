@@ -37,4 +37,13 @@
             </where>
         </if>
     </select>
+    <delete id="deleteUser" parameterType="list">
+        DELETE  FROM  userinfo  WHERE ID IN
+        <if test="list!=null">
+            <foreach collection="list" item="id" separator="," open="(" close=")">#{id}</foreach>
+        </if>
+    </delete>
+    <delete id="delete">
+        DELETE FROM userinfo WHERE id = #{id}
+    </delete>
 </mapper>

@@ -111,4 +111,15 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         List<UserInfo> query = userInfoMapper.query(userName);
         return query;
     }
+
+    @Override
+    public void deleteUser(List<String> list) throws BaseException {
+        userInfoMapper.deleteUser(list);
+        userInfoMoreMapper.deleteUserInfoMore(list);
+    }
+    @Override
+    public void delete(String id) throws BaseException {
+        userInfoMapper.delete(id);
+        userInfoMoreMapper.delete(id);
+    }
 }

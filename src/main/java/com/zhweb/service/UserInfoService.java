@@ -71,4 +71,18 @@ public interface UserInfoService extends IService<UserInfo> {
      */
     List<UserInfo> query(String userName) throws BaseException;
 
+    /**
+     * 删除用户
+     * @return
+     * @throws BaseException
+     */
+    void deleteUser(List<String> list) throws BaseException;
+
+    /**
+     * 删除用户
+     * @return
+     * @throws BaseException
+     */
+    void delete(String id) throws BaseException;
+
 }

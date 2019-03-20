@@ -34,4 +34,8 @@ public interface UserInfoMapper extends BaseMapper<UserInfo> {
 
     List<UserInfo> query(@Param("userName")String userName);
 
+    void deleteUser(List<String> list);
+
+    void delete(String id);
+
 }

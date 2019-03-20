@@ -12,5 +12,13 @@
 <insert id="addUserInfo">
     INSERT INTO userinfo_more(user_id,address,telephone,qq) VALUES(#{id}, #{address},#{telephone},#{qq})
 </insert>
-
+<delete id="deleteUserInfoMore" parameterType="list">
+    DELETE FROM userinfo_more WHERE user_id IN
+    <if test="list!=null">
+        <foreach collection="list" item="id" separator="," open="(" close=")">#{id}</foreach>
+    </if>
+</delete>
+<delete id="delete">
+     DELETE FROM userinfo_more WHERE user_id=#{id}
+</delete>
 </mapper>

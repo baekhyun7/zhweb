@@ -51,6 +51,29 @@ public class UserController {
         }
 
     }
+    @ApiOperation(value = "deleteUser", notes = "deleteUser")
+    @PostMapping("/deleteUser")
+    @ResponseBody
+    public RestResult deleteUser(@RequestBody List<String> ids) {
+        try {
+            userInfoService.deleteUser(ids);
+            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,"删除成功！");
+        } catch (BaseException e) {
+            return RestResult.restFail("删除失败！");
+        }
+    }
+
+    @ApiOperation(value = "delete", notes = "delete")
+    @PostMapping("/delete")
+    @ResponseBody
+    public RestResult delete(@RequestParam(name ="id") String id) {
+        try {
+            userInfoService.delete(id);
+            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,"删除成功！");
+        } catch (BaseException e) {
+            return RestResult.restFail("删除失败！");
+        }
+    }
 
 }
 
