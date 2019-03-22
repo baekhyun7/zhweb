@@ -94,6 +94,11 @@ public interface UserInfoService extends IService<UserInfo> {
      */
     List<SysRole> getRole() throws  BaseException;
 
+    /**
+     * 更新信息
+     * @param userInfoConReq
+     * @throws BaseException
+     */
     void update(UserInfoConReq userInfoConReq) throws  BaseException;
 
 }
