@@ -6,11 +6,11 @@
     <resultMap id="UserInfoMap" type="com.zhweb.entity.UserInfoMore">
         <result column="user_id" jdbcType="VARCHAR" property="id"/>
         <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
-        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
         <result column="QQ" jdbcType="VARCHAR" property="qq"/>
     </resultMap>
 <insert id="addUserInfo">
-    INSERT INTO userinfo_more(user_id,address,telephone,qq) VALUES(#{id}, #{address},#{telephone},#{qq})
+    INSERT INTO userinfo_more(user_id,sex,telephone,qq) VALUES(#{id}, #{sex},#{telephone},#{qq})
 </insert>
 <delete id="deleteUserInfoMore" parameterType="list">
     DELETE FROM userinfo_more WHERE user_id IN
@@ -21,4 +21,8 @@
 <delete id="delete">
      DELETE FROM userinfo_more WHERE user_id=#{id}
 </delete>
+<update id="updateUserMoreInfo" parameterType="com.zhweb.entity.UserInfoMore">
+    UPDATE userinfo_more SET telephone=#{telephone},sex=#{sex},QQ=#{qq}
+    where user_id=#{id}
+</update>
 </mapper>

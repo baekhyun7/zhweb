@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhweb.mapper.RoleInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="RoleInfoMap" type="com.zhweb.entity.SysRole">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="role" jdbcType="VARCHAR" property="role"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+
+    <select id="getRole" resultMap="RoleInfoMap">
+        SELECT * from sysrole
+    </select>
+    <update id="updateRole" parameterType="com.zhweb.entity.SysUserRole">
+        UPDATE sysuserrole SET role_id = #{roleId} where user_id=#{userId}
+    </update>
+</mapper>

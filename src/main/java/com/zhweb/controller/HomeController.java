@@ -88,11 +88,23 @@ public class HomeController {
     @ResponseBody
     public RestResult register(@RequestBody UserInfoReq userInfoReq) {
         try {
-            userInfoService.register(userInfoReq);
+            UserInfo userInfo = userInfoService.register(userInfoReq);
+
+            List<String> roleList = userInfoService.getRoleListString(userInfo.getId());
+            List<String> permissionList = userInfoService.getPermissionListString(userInfo.getId());
+
             String jwt = JwtUtils.sign(userInfoReq.getUserName());
             JwtToken jwtToken=new JwtToken(jwt,userInfoReq.getPassword());
             SecurityUtils.getSubject().login(jwtToken);
-            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,"注册成功",jwt);
+
+            UserJwtInfo userJwtInfo = new UserJwtInfo();
+            userJwtInfo.setId(userInfo.getId());
+            userJwtInfo.setPassword(userInfo.getPassword());
+            userJwtInfo.setName(userInfo.getUserName());
+            userJwtInfo.setToken(jwt);
+            userJwtInfo.setPermission(permissionList);
+            userJwtInfo.setRole(roleList);
+            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,"注册成功",userJwtInfo);
         } catch (BaseException e) {
             return RestResult.restFail(e.getMessage());
         }

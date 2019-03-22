@@ -1,5 +1,7 @@
 package com.zhweb.mapper;
 
+import com.zhweb.entity.SysRole;
+import com.zhweb.entity.SysUserRole;
 import com.zhweb.entity.UserInfoMore;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -14,14 +16,9 @@ import java.util.List;
  * @since 2018-12-17
  */
 @Mapper
-public interface UserInfoMoreMapper{
+public interface RoleInfoMapper {
 
-   void addUserInfo(UserInfoMore userInfoMore);
+  List<SysRole> getRole();
 
-   void deleteUserInfoMore(List<String> list);
-
-   void delete(String id);
-
-   void updateUserMoreInfo(UserInfoMore userInfoMore);
-
+  void updateRole(SysUserRole sysUserRole);
 }

@@ -17,8 +17,8 @@ public class UserInfoMore extends BaseEntity{
     @ApiModelProperty(value="电话号码",name="telephone")
     private String telephone;
 
-    @ApiModelProperty(value="地址",name="address")
-    private String address;
+    @ApiModelProperty(value="性别",name="sex")
+    private int sex;
 
     @ApiModelProperty(value="qq",name="qq")
     private String qq;

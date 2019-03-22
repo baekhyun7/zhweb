@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.plugins.pagination.Pagination;
 import com.zhweb.entity.SysPermission;
 import com.zhweb.entity.SysRole;
 import com.zhweb.entity.UserInfo;
+import com.zhweb.entity.UserShowInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -32,7 +33,7 @@ public interface UserInfoMapper extends BaseMapper<UserInfo> {
 
     void addRole(@Param("user_id") String user_id, @Param("role_id") String role_id);
 
-    List<UserInfo> query(@Param("userName")String userName);
+    List<UserShowInfo> query(@Param("userName")String userName);
 
     void deleteUser(List<String> list);
 

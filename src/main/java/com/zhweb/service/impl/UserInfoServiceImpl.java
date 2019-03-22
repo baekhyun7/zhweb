@@ -6,11 +6,10 @@ import com.common.exception.BaseException;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 import com.zhweb.JwtToken.JwtToken;
+import com.zhweb.entity.*;
+import com.zhweb.entity.RO.UserInfoConReq;
 import com.zhweb.entity.RO.UserInfoReq;
-import com.zhweb.entity.SysPermission;
-import com.zhweb.entity.SysRole;
-import com.zhweb.entity.UserInfo;
-import com.zhweb.entity.UserInfoMore;
+import com.zhweb.mapper.RoleInfoMapper;
 import com.zhweb.mapper.UserInfoMapper;
 import com.zhweb.mapper.UserInfoMoreMapper;
 import com.zhweb.service.UserInfoService;
@@ -20,6 +19,7 @@ import com.zhweb.util.UUIDUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +39,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     private UserInfoMapper userInfoMapper;
     @Autowired
     private UserInfoMoreMapper userInfoMoreMapper;
+    @Autowired
+    private RoleInfoMapper roleInfoMapper;
 
     @Override
     public UserInfo findByUsername(String username) throws BaseException {
@@ -83,7 +85,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     }
 
     @Override
-    public void register(UserInfoReq userInfoReq) throws BaseException {
+    public UserInfo register(UserInfoReq userInfoReq) throws BaseException {
         UserInfo byUsername = userInfoMapper.findByUsername(userInfoReq.getUserName());
         if (byUsername != null) {
             throw new BaseException("该用户名已经被注册！！");
@@ -96,30 +98,56 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
         UserInfoMore userInfoMore = new UserInfoMore();
         userInfoMore.setId(id);
+        userInfoMore.setSex(userInfoReq.getSex());
         userInfoMore.setQq(userInfoReq.getQq());
         userInfoMore.setTelephone(userInfoReq.getTelephone());
 
         userInfoMapper.addUser(userInfo);
-        userInfoMapper.addRole(userInfo.getId(),"1");
+        userInfoMapper.addRole(userInfo.getId(),"3");
         userInfoMoreMapper.addUserInfo(userInfoMore);
 
-
+        return userInfo;
     }
 
     @Override
-    public List<UserInfo> query(String userName) throws BaseException {
-        List<UserInfo> query = userInfoMapper.query(userName);
+    public List<UserShowInfo> query(String userName) throws BaseException {
+        List<UserShowInfo> query = userInfoMapper.query(userName);
         return query;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteUser(List<String> list) throws BaseException {
         userInfoMapper.deleteUser(list);
         userInfoMoreMapper.deleteUserInfoMore(list);
     }
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(String id) throws BaseException {
         userInfoMapper.delete(id);
         userInfoMoreMapper.delete(id);
+    }
+
+    @Override
+    public List<SysRole> getRole() throws BaseException {
+        return roleInfoMapper.getRole();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void update(UserInfoConReq userInfoConReq) throws BaseException {
+        UserInfoMore userInfoMore = new UserInfoMore();
+        userInfoMore.setSex(userInfoConReq.getSex());
+        userInfoMore.setQq(userInfoConReq.getQq());
+        userInfoMore.setTelephone(userInfoConReq.getTelephone());
+        userInfoMore.setId(userInfoConReq.getId());
+
+        userInfoMoreMapper.updateUserMoreInfo(userInfoMore);
+
+        SysUserRole sysUserRole=new SysUserRole();
+        sysUserRole.setRoleId(userInfoConReq.getRoleId());
+        sysUserRole.setUserId(userInfoConReq.getId());
+
+        roleInfoMapper.updateRole(sysUserRole);
     }
 }

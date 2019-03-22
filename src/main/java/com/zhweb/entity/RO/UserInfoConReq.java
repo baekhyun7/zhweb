@@ -9,7 +9,10 @@ import lombok.Data;
  * @Description:
  */
 @Data
-public class UserInfoReq {
+public class UserInfoConReq {
+
+    @ApiModelProperty(value="id",name="id")
+    private String id;
 
     @ApiModelProperty(value="电话号码",name="telephone")
     private String telephone;
@@ -20,11 +23,15 @@ public class UserInfoReq {
     @ApiModelProperty(value="用户名",name="userName")
     private String userName;
 
-    @ApiModelProperty(value="密码",name="password")
-    private String password;
+    @ApiModelProperty(value="用户名",name="name")
+    private String name;
 
     @ApiModelProperty(value="性别",name="sex")
     private int sex;
 
+    @ApiModelProperty(value="这里用作role的id",name="description")
+    private String description;
 
+    @ApiModelProperty(value="这里用作role的id",name="description")
+    private String roleId;
 }
