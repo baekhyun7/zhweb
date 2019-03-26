@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhweb.mapper.ArticleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="ArticleMap" type="com.zhweb.entity.Article" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="created_user_id" property="createdUserId" jdbcType="VARCHAR" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="reading_amount" property="readingAmount" jdbcType="BIGINT" />
+        <result column="praise_clicks" property="praiseClicks" jdbcType="BIGINT" />
+        <result column="deleted" property="deleted" jdbcType="BIT" />
+        <result column="original" property="original" jdbcType="BIT" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="getArticleShowList" resultType="com.zhweb.entity.ArticleShow">
+        SELECT
+            t1.id,
+            t2.id as createdUserId,
+            t2.user_name as createdUsername,
+            t1.title,
+            t1.content,
+            t1.reading_amount as readingAmount,
+            t1.praise_clicks as praiseClicks,
+            t1.create_time as createTime,
+            t1.update_time as updateTime
+        FROM
+            article t1
+            INNER JOIN userinfo t2 ON t1.created_user_id = t2.id ORDER BY t1.create_time DESC
+    </select>
+    
+    <select id="getArticleShowById" resultType="com.zhweb.entity.ArticleShow">
+        SELECT
+            t1.id,
+            t2.id as createdUserId,
+            t2.user_name as createdUsername,
+            t1.title,
+            t1.content,
+            t1.reading_amount as readingAmount,
+            t1.praise_clicks as praiseClicks,
+            t1.create_time as createTime,
+            t1.update_time as updateTime
+        FROM
+            article t1
+            INNER JOIN userinfo t2 ON t1.created_user_id = t2.id
+        WHERE t1.id=#{id}
+    </select>
+    <insert id="addArticle" parameterType="com.zhweb.entity.Article">
+        INSERT INTO article(id,created_user_id,title,content,reading_amount,praise_clicks,create_time,update_time) VALUES
+            (#{id},#{createdUserId},#{title},#{content},#{readingAmount},#{praiseClicks},#{createTime},#{updateTime})
+    </insert>
+    <update id="readingAmountAddOne">
+        UPDATE article SET reading_amount = #{readingAmount} where id=#{id}
+    </update>
+    <update id="praiseClicksAddOne">
+        UPDATE article SET praise_clicks = #{praiseClicks} where id=#{id}
+    </update>
+</mapper>
