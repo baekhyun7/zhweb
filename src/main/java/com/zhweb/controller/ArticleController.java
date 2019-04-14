@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -85,6 +86,17 @@ public class ArticleController {
             return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,"文章点赞成功！");
         } catch (BaseException e) {
             return RestResult.restFail("文章点赞失败！");
+        }
+    }
+    @ApiOperation(value = "upload", notes = "上传图片")
+    @PostMapping("/uploadPicture")
+    @ResponseBody
+    public RestResult uploadPicture(@RequestParam MultipartFile file) {
+        try {
+            String s = articleService.uploadPicture(file);
+            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,"上传图片成功！",s);
+        } catch (BaseException e) {
+            return RestResult.restFail("上传图片失败！");
         }
     }
 

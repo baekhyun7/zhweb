@@ -60,10 +60,7 @@ public class ShiroConfiguration {
         // 必须设置 SecurityManager
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
-        // 添加自己的过滤器并且取名为jwt
-        Map<String, Filter> filterMap = new HashMap<String, Filter>(1);
-        filterMap.put("authc", new JwtFilter());
-        shiroFilterFactoryBean.setFilters(filterMap);
+
 
         //拦截器.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
@@ -76,8 +73,8 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/webjars/**", "anon");
         filterChainDefinitionMap.put("/v2/**", "anon");
         filterChainDefinitionMap.put("/swagger-resources/**", "anon");
+        filterChainDefinitionMap.put("/picture/**", "anon");
 
-        filterChainDefinitionMap.put("/mMovie/hello", "perms[userInfo.add]");
 
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/register", "anon");
@@ -86,6 +83,11 @@ public class ShiroConfiguration {
 
 
         filterChainDefinitionMap.put("/**", "authc");
+
+        // 添加自己的过滤器并且取名为jwt
+        Map<String, Filter> filterMap = new HashMap<String, Filter>(1);
+        filterMap.put("authc", new JwtFilter());
+        shiroFilterFactoryBean.setFilters(filterMap);
 
 //        // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
         shiroFilterFactoryBean.setLoginUrl("/login");

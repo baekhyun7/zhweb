@@ -8,6 +8,7 @@ import com.zhweb.config.BaiDuApiConfiguration;
 import com.zhweb.entity.IdentifyResult;
 import com.zhweb.entity.ResultInfo;
 import com.zhweb.service.ThingsIdentifyService;
+import com.zhweb.util.ImageDeFogUtil;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +43,9 @@ public class ThingsIdentifyServiceImpl implements ThingsIdentifyService {
         HashMap<String, String> options = new HashMap<String, String>();
         options.put(CommonConstants.BAIKE_INFO, "5");
         byte[] bytes = image.getBytes();
+        //图像去雾
+        ImageDeFogUtil.imageDeFog(bytes);
+
         JSONObject jsonObject = client.animalDetect(bytes, options);
         IdentifyResult identifyResult = JSON.parseObject(jsonObject.toString(2), IdentifyResult.class);
         return identifyResult.getResult();

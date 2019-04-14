@@ -49,4 +49,11 @@ public interface ArticleService {
      * @throws BaseException
      */
     void praiseClicksAddOne(ArticleReq articleReq) throws  BaseException;
+
+    /**
+     * 上传图片
+     * @param file
+     * @throws BaseException
+     */
+    String uploadPicture(MultipartFile file) throws  BaseException;
 }

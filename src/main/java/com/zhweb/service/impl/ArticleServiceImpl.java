@@ -13,6 +13,7 @@ import com.zhweb.entity.ResultInfo;
 import com.zhweb.mapper.ArticleMapper;
 import com.zhweb.service.ArticleService;
 import com.zhweb.service.ThingsIdentifyService;
+import com.zhweb.util.FileUtil;
 import com.zhweb.util.UUIDUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,5 +85,10 @@ public class ArticleServiceImpl implements ArticleService {
         article.setId(id);
         article.setPraiseClicks(praiseClicksAddOne);
         articleMapper.praiseClicksAddOne(article);
+    }
+
+    @Override
+    public String uploadPicture(MultipartFile file) throws BaseException {
+        return FileUtil.upload(file);
     }
 }

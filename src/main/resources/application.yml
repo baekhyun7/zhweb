@@ -6,9 +6,6 @@ spring:
     username: root
     password: zhang962464.
     type: com.alibaba.druid.pool.DruidDataSource
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
   redis:
     host: localhost
     port: 6379
