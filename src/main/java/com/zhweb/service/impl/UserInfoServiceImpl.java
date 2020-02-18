@@ -103,7 +103,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         userInfoMore.setTelephone(userInfoReq.getTelephone());
 
         userInfoMapper.addUser(userInfo);
-        userInfoMapper.addRole(userInfo.getId(),"3");
+        userInfoMapper.addRole(userInfo.getId(),"2");
         userInfoMoreMapper.addUserInfo(userInfoMore);
 
         return userInfo;
@@ -113,6 +113,11 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     public List<UserShowInfo> query(String userName) throws BaseException {
         List<UserShowInfo> query = userInfoMapper.query(userName);
         return query;
+    }
+
+    @Override
+    public UserShowInfo queryById(String id) {
+        return userInfoMapper.queryById(id);
     }
 
     @Transactional(rollbackFor = Exception.class)

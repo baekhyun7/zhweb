@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhweb.mapper.CarInventoryMapper">
+
+
+<select id="queryTotal" parameterType="string" resultType="com.zhweb.entity.CarTypeTotal">
+    SELECT
+	t2.NAME,
+	t1.typeId,
+	SUM( t1.num ) AS total
+FROM
+	type_num_rel t1
+	LEFT JOIN car_type t2 ON t1.typeId = t2.id
+<where>
+    <if test="name!=null and name!=''">
+        t2.name  LIKE CONCAT('%',#{name},'%')
+    </if>
+</where>
+GROUP BY
+	t1.typeId
+</select>
+	<select id="queryCarSupplyNum" parameterType="string" resultType="com.zhweb.entity.CarSupplyNum">
+		SELECT
+	t2.NAME,
+	t1.num,
+	t1.supplyId,t1.id
+FROM
+	type_num_rel t1
+	LEFT JOIN car_supply t2 ON t1.supplyId = t2.id
+WHERE
+	t1.typeId =#{typeId}
+	</select>
+	<update id="update" parameterType="com.zhweb.entity.CarTypeRel">
+		update type_num_rel set num=#{num} where id=#{id}
+	</update>
+
+</mapper>

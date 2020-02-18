@@ -45,6 +45,13 @@
             </where>
         </if>
     </select>
+    <select id="queryById" parameterType="string" resultType="com.zhweb.entity.UserShowInfo">
+        SELECT t1.id,t1.user_name,t1.name,t2.telephone,t2.sex,t2.QQ,t4.role,t4.description,t4.id as roleId from userinfo t1 INNER JOIN
+        userinfo_more t2 on t1.id=t2.user_id
+        INNER join sysuserrole t3 on t3.user_id = t1.id
+        INNER JOIN sysrole t4 on t4.id= t3.role_id
+        where t1.id=#{id}
+    </select>
     <delete id="deleteUser" parameterType="list">
         DELETE FROM userinfo WHERE ID IN
         <if test="list!=null">

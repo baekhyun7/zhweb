@@ -38,7 +38,13 @@ public class UserController {
     @Autowired
     private UserInfoService userInfoService;
 
-
+    @ApiOperation(value = "id", notes = "id")
+    @GetMapping("/id")
+    @ResponseBody
+    public RestResult queryById(@RequestParam(value = "id") String id) {
+            UserShowInfo query = userInfoService.queryById(id);
+            return RestResult.restSuccess(CommonConstants.SUCCESS_RESPONSE_CODE,query);
+    }
     @ApiOperation(value = "query", notes = "query")
     @PostMapping("/query")
     @ResponseBody

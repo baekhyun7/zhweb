@@ -18,7 +18,7 @@ public class FileUtil {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public static final  String PATH = "D:\\ideaProject\\zhweb\\src\\main\\resources\\static\\picture\\";
+    public static final  String PATH = "D:\\ideaProject\\zhweb\\src\\main\\resources";
 
     /**
      * 读取文件内容，作为字符串返回
@@ -86,17 +86,6 @@ public class FileUtil {
         if (imageFile.isEmpty()) {
             return null;
         }
-//        String filename = imageFile.getOriginalFilename();
-//
-//        String ext= null;
-//        if(filename.contains(".")){
-//            ext = filename.substring(filename.lastIndexOf("."));
-//        }else{
-//            ext = "";
-//        }
-//
-//       String uuid =  UUIDUtils.creatUUID().replaceAll("-", "");
-//        String nfileName = uuid + ext;
         String filename = imageFile.getOriginalFilename();
 
         String ext= null;

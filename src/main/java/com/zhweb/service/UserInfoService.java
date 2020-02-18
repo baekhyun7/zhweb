@@ -73,6 +73,8 @@ public interface UserInfoService extends IService<UserInfo> {
      */
     List<UserShowInfo> query(String userName) throws BaseException;
 
+    UserShowInfo queryById(String id);
+
     /**
      * 删除用户
      * @return

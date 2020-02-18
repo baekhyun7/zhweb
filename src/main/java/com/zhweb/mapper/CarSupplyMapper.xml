@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhweb.mapper.CarSupplyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="CarSupplyMap" type="com.zhweb.entity.CarSupply">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+
+    <select id="queryCarSupply" parameterType="string" resultMap="CarSupplyMap">
+        select * from car_supply
+        <where>
+            <if test="carSupplyConReq.name!=null and carSupplyConReq.name!=''">
+            name LIKE CONCAT('%',#{carSupplyConReq.name},'%')
+                or telephone LIKE CONCAT('%',#{carSupplyConReq.name},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="addCarSupply" parameterType="com.zhweb.entity.CarSupply">
+    INSERT INTO car_supply(id,name,address,telephone,description) VALUES(#{id}, #{name},#{address},#{telephone},#{description})
+    </insert>
+
+    <update id="updateCarSupply" parameterType="com.zhweb.entity.CarSupply">
+        update car_supply set name=#{name},address=#{address},telephone=#{telephone},description=#{description} where id=#{id}
+    </update>
+
+    <delete id="deleteCarSupply" parameterType="list">
+        DELETE FROM car_supply WHERE id IN
+        <if test="list!=null">
+            <foreach collection="list" item="id" separator="," open="(" close=")">#{id}</foreach>
+        </if>
+    </delete>
+
+    <select id="queryCarType" resultType="com.zhweb.entity.CarType">
+        select * from car_type
+    </select>
+
+    <insert id="addTypeNumBatch" parameterType="list">
+        INSERT INTO type_num_rel(id,supplyId,typeId,num)
+        VALUES
+        <foreach collection="carTypeNums" item="list" separator=",">
+            (#{list.id},#{list.supplyId},#{list.carType},#{list.num})
+        </foreach>
+    </insert>
+
+    <delete id="deleteTypeNumRel" parameterType="string">
+        delete from type_num_rel where supplyId=#{id}
+    </delete>
+
+    <select id="queryTypeNum" parameterType="string" resultType="com.zhweb.entity.CarTypeRel">
+        select typeId AS carType,num from type_num_rel where supplyId=#{supplyId}
+    </select>
+</mapper>

@@ -7,28 +7,21 @@ import com.common.web.entity.RestResult;
 import com.zhweb.JwtToken.JwtToken;
 import com.zhweb.entity.*;
 import com.zhweb.entity.RO.UserInfoReq;
-import com.zhweb.service.MMovieService;
 import com.zhweb.service.UserInfoService;
 import com.zhweb.util.JwtUtils;
 import com.zhweb.util.MD5Util;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.crazycake.shiro.RedisManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -43,6 +36,8 @@ public class HomeController {
 
     @Autowired
     private UserInfoService userInfoService;
+    @Autowired
+    private RedisManager redisManager;
 
 
     @ApiOperation(value = "login", notes = "login")
@@ -73,7 +68,7 @@ public class HomeController {
                 userJwtInfo.setToken(jwt);
                 userJwtInfo.setPermission(permissionList);
                 userJwtInfo.setRole(roleList);
-
+                //redisManager.set("user".getBytes(),userJwtInfo.toString().getBytes());
                 return RestResult.restSuccess(userJwtInfo);
             }else{
                 return RestResult.restFail("登录失败，请重新登录");

@@ -25,11 +25,9 @@ public class BaiDuApiConfiguration {
     public static AipImageClassify getClient(){
         // 初始化一个AipImageClassifyClient
         AipImageClassify client = new AipImageClassify(APP_ID, API_KEY, SECRET_KEY);
-
         // 可选：设置网络连接参数
         client.setConnectionTimeoutInMillis(2000);
         client.setSocketTimeoutInMillis(60000);
-
         return client;
 
     }
